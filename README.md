@@ -4,7 +4,6 @@
 
 1. [Overview](#overview)
 3. [Setup - The basics of getting started with certs](#setup)
-    * [What certs affects](#what-certs-affects)
     * [Setup requirements](#setup-requirements)
     * [Beginning with certs](#beginning-with-certs)
 4. [Usage - Configuration options and additional functionality](#usage)
@@ -17,7 +16,7 @@ other classes that require the files to already exist on a managed node.
 
 ## Setup
 
-### Setup Requirements **OPTIONAL**
+### Setup Requirements
 
 The certificate files must come from an external store. Recommended stores
 are a site-specific (and private!) module containing SSL files or a network-
