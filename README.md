@@ -3,77 +3,52 @@
 #### Table of Contents
 
 1. [Overview](#overview)
-2. [Module Description - What the module does and why it is useful](#module-description)
 3. [Setup - The basics of getting started with certs](#setup)
     * [What certs affects](#what-certs-affects)
     * [Setup requirements](#setup-requirements)
     * [Beginning with certs](#beginning-with-certs)
 4. [Usage - Configuration options and additional functionality](#usage)
-5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
-5. [Limitations - OS compatibility, etc.](#limitations)
-6. [Development - Guide for contributing to the module](#development)
 
 ## Overview
 
-A one-maybe-two sentence summary of what the module does/what problem it solves.
-This is your 30 second elevator pitch for your module. Consider including
-OS/Puppet version it works with.
-
-## Module Description
-
-If applicable, this section should have a brief description of the technology
-the module integrates with and what that integration enables. This section
-should answer the questions: "What does this module *do*?" and "Why would I use
-it?"
-
-If your module has a range of functionality (installation, configuration,
-management, etc.) this is the time to mention it.
+Provides SSL certificate files required by apache and other webservers via
+the certs::vhost define. These files can then be provided to apache::vhost and
+other classes that require the files to already exist on a managed node.
 
 ## Setup
 
-### What certs affects
-
-* A list of files, packages, services, or operations that the module will alter,
-  impact, or execute on the system it's installed on.
-* This is a great place to stick any warnings.
-* Can be in list or paragraph form.
-
 ### Setup Requirements **OPTIONAL**
 
-If your module requires anything extra before setting up (pluginsync enabled,
-etc.), mention it here.
+The certificate files must come from an external store. Recommended stores
+are a site-specific (and private!) module containing SSL files or a network-
+accessible filesystem, such as NFS, that the managed node can access.
 
 ### Beginning with certs
 
-The very basic steps needed for a user to get the module up and running.
-
-If your most recent release breaks compatibility or requires particular steps
-for upgrading, you may wish to include an additional section here: Upgrading
-(For an example, see http://forge.puppetlabs.com/puppetlabs/firewall).
+Once a file store is determined, include at least one certs::vhost define
+and specify the file store location as the `source_path`. You may optionally
+specify a `target_path` if the default location of `/etc/ssl/certs` is not
+desired.
 
 ## Usage
 
-Put the classes, types, and resources for customizing, configuring, and doing
-the fancy stuff with your module here.
+    certs::vhost { 'www.example.com':
+      source_path => 'puppet:///site_certificates',
+    }
 
-## Reference
+Creates `/etc/ssl/certs/www.example.com.crt` and
+`/etc/ssl/certs/www.example.com.key` based off of
+`puppet:///site_certificates/www.example.com.crt` and
+`puppet:///site_certificates/www.example.com.key`.
 
-Here, list the classes, types, providers, facts, etc contained in your module.
-This section should include all of the under-the-hood workings of your module so
-people know what the module is touching on their system but don't need to mess
-with things. (We are working on automating this section!)
+    certs::vhost { 'www.example.com':
+      target_path => '/etc/httpd/ssl.d',
+      source_path => 'puppet:///site_certificates',
+    }
 
-## Limitations
+Creates the same crt and key files in `/etc/httpd/ssl.d`.
 
-This is where you list OS compatibility, version compatibility, etc.
+    Certs::vhost<| |> -> Apache::vhost<| |>
 
-## Development
-
-Since your module is awesome, other users will want to play with it. Let them
-know what the ground rules for contributing are.
-
-## Release Notes/Contributors/Etc **Optional**
-
-If you aren't using changelog, put your release notes here (though you should
-consider using changelog). You may also add any additional sections you feel are
-necessary or important to include here. Please use the `## ` header.
+When providing the certificate files to the `apache::vhost` or similar classes
+it is best to ensure they are properly dependent upon the `certs::vhost`.
