@@ -1,41 +1,16 @@
 # == Class: certs
 #
-# Full description of class certs here.
-#
-# === Parameters
-#
-# Document parameters here.
-#
-# [*sample_parameter*]
-#   Explanation of what this parameter affects and what it defaults to.
-#   e.g. "Specify one or more upstream ntp servers as an array."
-#
-# === Variables
-#
-# Here you should define a list of variables that this module would require.
-#
-# [*sample_variable*]
-#   Explanation of how this variable affects the funtion of this class and if
-#   it has a default. e.g. "The parameter enc_ntp_servers must be set by the
-#   External Node Classifier as a comma separated list of hostnames." (Note,
-#   global variables should be avoided in favor of class parameters as
-#   of Puppet 2.6.)
-#
-# === Examples
-#
-#  class { certs:
-#    servers => [ 'pool.ntp.org', 'ntp.local.company.com' ],
-#  }
+# The certs class provides a single define, certs::vhost. The certs class
+# itself should never be instantiated.
 #
 # === Authors
 #
-# Author Name <author@domain.com>
+# Rob Nelson <rnelson0@gmail.com>
 #
 # === Copyright
 #
-# Copyright 2014 Your name here, unless otherwise noted.
+# Copyright 2014 Rob Nelson
 #
 class certs {
-
-
+  fail('The certs class is empty and should never be used. See certs::vhost instead.)
 }
