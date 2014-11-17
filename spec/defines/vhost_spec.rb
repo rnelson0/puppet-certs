@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'certs::vhost' do
   let(:title) { 'www.example.com' }
   let(:params) { {
-    :source_path => 'puppet:///othermodule/'
+    :source_path => 'puppet:///othermodule'
   } }
 
   it do
@@ -21,7 +21,7 @@ describe 'certs::vhost' do
 
   context 'with target_path => /etc/httpd/ssl.d' do
     let(:params) { {
-      :source_path => 'puppet:///othermodule/',
+      :source_path => 'puppet:///othermodule',
       :target_path => '/etc/httpd/ssl.d'
     } }
 
