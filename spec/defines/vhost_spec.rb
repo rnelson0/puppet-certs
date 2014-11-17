@@ -3,34 +3,38 @@ require 'spec_helper'
 describe 'certs::vhost' do
   let(:title) { 'www.example.com' }
   let(:params) { {
-    :source_path => 'puppet:///othermodule/',
+    :source_path => 'puppet:///othermodule/'
   } }
 
   it do
     should contain_file('www.example.com.crt').with({
-      :path => '/etc/ssl/certs/www.example.com.crt',
+      :path   => '/etc/ssl/certs/www.example.com.crt',
+      :source => 'puppet:///othermodule/www.example.com.crt'
     })
   end
   it do
     should contain_file('www.example.com.key').with({
-      :path => '/etc/ssl/certs/www.example.com.key',
+      :path   => '/etc/ssl/certs/www.example.com.key',
+      :source => 'puppet:///othermodule/www.example.com.key'
     })
   end
 
   context 'with target_path => /etc/httpd/ssl.d' do
     let(:params) { {
       :source_path => 'puppet:///othermodule/',
-      :target_path => '/etc/httpd/ssl.d',
+      :target_path => '/etc/httpd/ssl.d'
     } }
 
     it do
       should contain_file('www.example.com.crt').with({
-        :path => '/etc/httpd/ssl.d/www.example.com.crt',
+        :path   => '/etc/httpd/ssl.d/www.example.com.crt',
+        :source => 'puppet:///othermodule/www.example.com.crt'
       })
     end
     it do
       should contain_file('www.example.com.key').with({
-        :path => '/etc/httpd/ssl.d/www.example.com.key',
+        :path   => '/etc/httpd/ssl.d/www.example.com.key',
+        :source => 'puppet:///othermodule/www.example.com.key'
       })
     end
   end
