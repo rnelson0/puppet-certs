@@ -12,5 +12,5 @@
 # Copyright 2014 Rob Nelson
 #
 class certs {
-  fail('The certs class is empty and should never be used. See certs::vhost instead.)
+  # Empty class. The module provides certs::vhost instead.
 }
