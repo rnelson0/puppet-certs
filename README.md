@@ -31,6 +31,8 @@ desired.
 
 ## Usage
 
+No trailing slash should be provided to `source_path`.
+
     certs::vhost { 'www.example.com':
       source_path => 'puppet:///site_certificates',
     }

@@ -27,14 +27,14 @@
 #
 #    $cname = www.example.com
 #    certs::vhost{ $cname:
-#      source_path => 'puppet:///site_certificates/',
+#      source_path => 'puppet:///site_certificates',
 #    }
 #
 #  With Hiera:
 #
 #    server.yaml
 #    ---
-#    certs::vhost::source_path: 'puppet:///site_certificates/'
+#    certs::vhost::source_path: 'puppet:///site_certificates'
 #    certsvhost:
 #      'www.example.com': {}
 #
