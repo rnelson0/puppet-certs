@@ -21,6 +21,10 @@
 # Location where the certificate files will be stored on the managed node.
 # Optional value, defaults to '/etc/ssl/certs'
 #
+# [service]
+# Name of the web server service to notify when certificates are updated.
+# Optional value, defaults to 'httpd'
+#
 # === Examples
 #
 #  Without Hiera:
@@ -53,7 +57,8 @@
 #
 define certs::vhost (
   $source_path = undef,
-  $target_path        = '/etc/ssl/certs',
+  $target_path = '/etc/ssl/certs',
+  $service     = 'httpd',
 ) {
   if ($name == undef) {
     fail('You must provide a name value for the vhost to certs::vhost.')
@@ -67,15 +72,17 @@ define certs::vhost (
 
   $crt = "${name}.crt"
   $key = "${name}.key"
- 
+
   file { $crt:
     ensure => file,
     path   => "${target_path}/${crt}",
     source => "${source_path}/${crt}",
+    notify => Service[$service],
   } ->
   file { $key:
     ensure => file,
     path   => "${target_path}/${key}",
     source => "${source_path}/${key}",
+    notify => Service[$service],
   }
 }
