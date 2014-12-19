@@ -49,7 +49,7 @@ Creates `/etc/ssl/certs/www.example.com.crt` and
 
 Creates the same crt and key files in `/etc/httpd/ssl.d`.
 
-    Certs::vhost<| |> -> Apache::vhost<| |>
+    Certs::Vhost<| |> -> Apache::Vhost<| |>
 
 When providing the certificate files to the `apache::vhost` or similar classes
 it is best to ensure they are properly dependent upon the `certs::vhost`.
