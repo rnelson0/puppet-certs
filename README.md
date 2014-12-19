@@ -34,7 +34,7 @@ desired.
 No trailing slash should be provided to `source_path`.
 
     certs::vhost { 'www.example.com':
-      source_path => 'puppet:///site_certificates',
+      source_path => 'puppet:///modules/site_certificates',
     }
 
 Creates `/etc/ssl/certs/www.example.com.crt` and
@@ -44,7 +44,7 @@ Creates `/etc/ssl/certs/www.example.com.crt` and
 
     certs::vhost { 'www.example.com':
       target_path => '/etc/httpd/ssl.d',
-      source_path => 'puppet:///site_certificates',
+      source_path => 'puppet:///modules/site_certificates',
     }
 
 Creates the same crt and key files in `/etc/httpd/ssl.d`.
