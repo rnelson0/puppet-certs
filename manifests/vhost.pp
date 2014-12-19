@@ -38,14 +38,15 @@
 #
 #    server.yaml
 #    ---
-#    certs::vhost::source_path: 'puppet:///site_certificates'
 #    certsvhost:
-#      'www.example.com': {}
+#      'www.example.com':
+#        source_path: 'puppet:///modules/site_certificates/'
 #
 #    manifest.pp
+#    ---
 #    certsvhost = hiera_hash('certsvhost')
 #    create_resources(certs::vhost, certsvhost)
-#    Certs::vhost<| |> -> Apache::vhost<| |>
+#    Certs::Vhost<| |> -> Apache::Vhost<| |>
 #
 # === Authors
 #
