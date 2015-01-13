@@ -1,23 +1,21 @@
 {
   "name": "rnelson0-certs",
-  "version": "0.6.0",
-  "author": "rnelson0",
+  "version": "0.6.1",
+  "author": "Rob Nelson",
   "summary": "SSL Certificate File Management",
-  "license": "Apache 2.0",
+  "license": "Apache Version 2.0",
   "source": "https://github.com/rnelson0/certs",
   "issues_url": "https://github.com/rnelson0/certs/issues",
   "project_page": "https://github.com/rnelson0/certs",
   "operatingsystem_support": [
     {
       "operatingsystem":"RedHat",
-      "operatingsystemrelease": [ "6.5" ]
+      "operatingsystemrelease": [
+        "6.5"
+      ]
     }
   ],
   "dependencies": [
-    {
-      "version_range": ">= 1.0.0",
-      "name": "puppetlabs-stdlib"
-    }
   ]
 }
 
