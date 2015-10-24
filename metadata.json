@@ -3,7 +3,7 @@
   "version": "0.6.2",
   "author": "Rob Nelson",
   "summary": "SSL Certificate File Management",
-  "license": "Apache Version 2.0",
+  "license": "Apache-2.0",
   "source": "https://github.com/rnelson0/puppet-certs",
   "issues_url": "https://github.com/rnelson0/puppet-certs/issues",
   "project_page": "https://github.com/rnelson0/puppet-certs",
