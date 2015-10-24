@@ -2,9 +2,11 @@ require 'spec_helper'
 
 describe 'certs::vhost' do
   let(:title) { 'www.example.com' }
-  let(:params) { {
-    :source_path => 'puppet:///othermodule'
-  } }
+  let(:params) do
+    {
+      :source_path => 'puppet:///othermodule'
+    }
+  end
 
   it { should contain_file('www.example.com.crt').with({
     :path   => '/etc/ssl/certs/www.example.com.crt',
@@ -18,10 +20,12 @@ describe 'certs::vhost' do
   }) }
 
   context 'with target_path => /etc/httpd/ssl.d' do
-    let(:params) {{
-      :source_path => 'puppet:///othermodule',
-      :target_path => '/etc/httpd/ssl.d'
-    }}
+    let(:params) do
+      {
+        :source_path => 'puppet:///othermodule',
+        :target_path => '/etc/httpd/ssl.d'
+      }
+    end
 
     it { should contain_file('www.example.com.crt').with({
       :path   => '/etc/httpd/ssl.d/www.example.com.crt',
@@ -34,10 +38,12 @@ describe 'certs::vhost' do
   end
 
   context 'with service => nginx' do
-    let(:params) {{
-      :source_path => 'puppet:///othermodule',
-      :service     => 'nginx'
-    }}
+    let(:params) do
+      {
+        :source_path => 'puppet:///othermodule',
+        :service     => 'nginx'
+      }
+    end
 
     it { should contain_file('www.example.com.crt').with({
       :notify => 'Service[nginx]'
