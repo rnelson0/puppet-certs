@@ -1,5 +1,9 @@
 # certs
 
+[![Build Status](https://travis-ci.org/rnelson0/puppet-certs.png?branch=master)](https://travis-ci.org/rnelson0/puppet-certs)
+[![Puppet Forge](http://img.shields.io/puppetforge/v/rnelson0/certs.svg)](https://forge.puppetlabs.com/rnelson0/certs)
+[![Puppet Forge Downloads](http://img.shields.io/puppetforge/dt/rnelson0/certs.svg)](https://forge.puppetlabs.com/rnelson0/certs)
+
 #### Table of Contents
 
 1. [Overview](#overview)
