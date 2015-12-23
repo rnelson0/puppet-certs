@@ -3,6 +3,8 @@
 [![Build Status](https://travis-ci.org/rnelson0/puppet-certs.png?branch=master)](https://travis-ci.org/rnelson0/puppet-certs)
 [![Puppet Forge](http://img.shields.io/puppetforge/v/rnelson0/certs.svg)](https://forge.puppetlabs.com/rnelson0/certs)
 [![Puppet Forge Downloads](http://img.shields.io/puppetforge/dt/rnelson0/certs.svg)](https://forge.puppetlabs.com/rnelson0/certs)
+[![Stories in Ready](https://badge.waffle.io/rnelson0/puppet-certs.svg?label=ready&title=Ready)](http://waffle.io/rnelson0/puppet-modules)
+[![Stories In Progress](https://badge.waffle.io/rnelson0/puppet-certs.svg?label=in progress&title=In Progress)](http://waffle.io/rnelson0/puppet-modules)
 
 #### Table of Contents
 
