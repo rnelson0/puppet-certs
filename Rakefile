@@ -7,16 +7,15 @@ require 'puppet/vendor/semantic/lib/semantic' unless Puppet.version.to_f < 3.6
 require 'puppet-lint/tasks/puppet-lint'
 require 'puppet-syntax/tasks/puppet-syntax'
 require 'metadata-json-lint/rake_task'
-require 'rubocop/rake_task'
+require 'parallel_tests'
+require 'parallel_tests/cli'
 
 # These gems aren't always present, for instance
 # on Travis with --without development
 begin
   require 'puppet_blacksmith/rake_tasks'
-rescue LoadError # rubocop:disable Lint/HandleExceptions
+rescue LoadError
 end
-
-RuboCop::RakeTask.new
 
 exclude_paths = [
   "bundle/**/*",
@@ -25,12 +24,19 @@ exclude_paths = [
   "spec/**/*",
 ]
 
+# Coverage from puppetlabs-spec-helper requires rcov which
+# doesn't work in anything since 1.8.7
+Rake::Task[:coverage].clear
+
 Rake::Task[:lint].clear
 
 PuppetLint.configuration.relative = true
+PuppetLint.configuration.disable_arrow_alignment
 PuppetLint.configuration.disable_80chars
 PuppetLint.configuration.disable_class_inherits_from_params_class
 PuppetLint.configuration.disable_class_parameter_defaults
+PuppetLint.configuration.disable_documentation
+PuppetLint.configuration.disable_single_quote_string_with_variables
 PuppetLint.configuration.fail_on_warnings = true
 
 PuppetLint::RakeTask.new :lint do |config|
@@ -49,11 +55,17 @@ task :contributors do
   system("git log --format='%aN' | sort -u > CONTRIBUTORS")
 end
 
+desc "Parallel spec tests"
+task :parallel_spec do
+  Rake::Task[:spec_prep].invoke
+  ParallelTests::CLI.new.run('--type test -t rspec spec/classes spec/defines spec/unit spec/functions'.split)
+  Rake::Task[:spec_clean].invoke
+end
+
 desc "Run syntax, lint, and spec tests."
 task :test => [
   :metadata_lint,
   :syntax,
   :lint,
-  :rubocop,
   :spec,
 ]
