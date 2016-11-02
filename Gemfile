@@ -9,7 +9,7 @@ group :test do
   gem "metadata-json-lint"
   gem "rspec-puppet-facts"
   gem 'simplecov'
-  gem 'simplecov-console'
+  gem 'coveralls'
   gem "parallel_tests"
 
   gem "puppet-lint-absolute_classname-check"
@@ -23,8 +23,6 @@ group :test do
 end
 
 group :development do
-  gem "travis"
-  gem "travis-lint"
   gem "puppet-blacksmith"
 end
 
