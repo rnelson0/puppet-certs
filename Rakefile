@@ -9,6 +9,7 @@ require 'puppet-syntax/tasks/puppet-syntax'
 require 'metadata-json-lint/rake_task'
 require 'parallel_tests'
 require 'parallel_tests/cli'
+require 'github_changelog_generator/task'
 
 # These gems aren't always present, for instance
 # on Travis with --without development
@@ -65,3 +66,10 @@ task :test => [
   :lint,
   :spec,
 ]
+
+GitHubChangelogGenerator::RakeTask.new :changelog do |config|
+  version = (Blacksmith::Modulefile.new).version
+  config.future_release = "v#{version}"
+  config.header = "# Change log\n\nAll notable changes to this project will be documented in this file.\nEach new release typically also includes the latest modulesync defaults.\nThese should not impact the functionality of the module."
+  config.exclude_labels = %w{duplicate question invalid wontfix modulesync}
+end
