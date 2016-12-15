@@ -3,7 +3,8 @@ language: ruby
 sudo: false
 cache: bundler
 notifications:
-  email: false
+  email:
+    on_failure: always
 branches:
   only:
     - master
