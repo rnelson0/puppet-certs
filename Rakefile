@@ -10,11 +10,6 @@ require 'parallel_tests'
 require 'parallel_tests/cli'
 require 'github_changelog_generator/task'
 
-if Puppet.version.to_f >= 4.9
-  require 'semantic_puppet'
-elsif Puppet.version.to_f >= 3.6 && Puppet.version.to_f < 4.9
-  require 'puppet/vendor/semantic/lib/semantic'
-end
 # These gems aren't always present, for instance
 # on Travis with --without development
 begin
