@@ -79,8 +79,8 @@ define certs::vhost (
     path   => "${target_path}/${crt}",
     source => "${source_path}/${crt}",
     notify => Service[$service],
-  } ->
-  file { $key:
+  }
+  -> file { $key:
     ensure => file,
     path   => "${target_path}/${key}",
     source => "${source_path}/${key}",
