@@ -1,3 +1,4 @@
+foo
 # certs
 
 [![Build Status](https://travis-ci.org/rnelson0/puppet-certs.png?branch=master)](https://travis-ci.org/rnelson0/puppet-certs)
