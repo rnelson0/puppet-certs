@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 describe 'certs::vhost' do
+  let (:pre_condition) {
+    "service {'httpd': ensure => running}"
+  }
+
   let(:title) { 'www.example.com' }
   let(:params) do
     {
@@ -38,6 +42,10 @@ describe 'certs::vhost' do
   end
 
   context 'with service => nginx' do
+    let (:pre_condition) {
+      "service {'nginx': ensure => running}"
+    }
+
     let(:params) do
       {
         :source_path => 'puppet:///othermodule',
