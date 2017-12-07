@@ -1,61 +1,37 @@
-# == Define: certs::vhost
+# @summary Used in conjunction with puppetlabs/apache's apache::vhost definitions, to provide the related ssl_cert and ssl_key files for a given vhost.
 #
-# SSL Certificate File Management
+# @example
+#    Without Hiera:
 #
-# Intended to be used in conjunction with puppetlabs/apache's apache::vhost
-# definitions, to provide the ssl_cert and ssl_key files.
+#      $cname = www.example.com
+#      certs::vhost{ $cname:
+#        source_path => 'puppet:///site_certificates',
+#      }
 #
-# === Parameters
+#    With Hiera:
+#  
+#      server.yaml
+#      ---
+#      certsvhost:
+#        'www.example.com':
+#          source_path: 'puppet:///modules/site_certificates/'
+#  
+#      manifest.pp
+#      ---
+#      certsvhost = hiera_hash('certsvhost')
+#      create_resources(certs::vhost, certsvhost)
+#      Certs::Vhost<| |> -> Apache::Vhost<| |>
 #
-# [name]
-# The title of the resource matches the certificate's name
-# e.g. 'www.example.com' matches the certificate for the hostname
-# 'www.example.com'
-#
-# [source_path]
-# The location of the certificate files. Typically references a module's files.
-# e.g. 'puppet:///site_certs' wills earch $modulepath/site_certs/files on the
-# master for the specified files.
-#
-# [target_path]
-# Location where the certificate files will be stored on the managed node.
-# Optional value, defaults to '/etc/ssl/certs'
-#
-# [service]
-# Name of the web server service to notify when certificates are updated.
-# Optional value, defaults to 'httpd'
-#
-# === Examples
-#
-#  Without Hiera:
-#
-#    $cname = www.example.com
-#    certs::vhost{ $cname:
-#      source_path => 'puppet:///site_certificates',
-#    }
-#
-#  With Hiera:
-#
-#    server.yaml
-#    ---
-#    certsvhost:
-#      'www.example.com':
-#        source_path: 'puppet:///modules/site_certificates/'
-#
-#    manifest.pp
-#    ---
-#    certsvhost = hiera_hash('certsvhost')
-#    create_resources(certs::vhost, certsvhost)
-#    Certs::Vhost<| |> -> Apache::Vhost<| |>
-#
-# === Authors
-#
-# Rob Nelson <rnelson0@gmail.com>
-#
-# === Copyright
-#
-# Copyright 2014 Rob Nelson
-#
+# @param title
+#  The title of the resource matches the certificate's name # e.g. 'www.example.com' matches the certificate for the hostname # 'www.example.com'
+# @param source_path
+#  Required. The location of the certificate files. Typically references a module's files. e.g. 'puppet:///site_certs' will search $modulepath/site_certs/files on the master for the specified files.
+# @param target_path
+#  Location where the certificate files will be stored on the managed node.
+#  Default: '/etc/ssl/certs'
+# @param service
+#  Name of the web server service to notify when certificates are updated.
+#  Default: 'http'
 define certs::vhost (
   $source_path = undef,
   $target_path = '/etc/ssl/certs',

@@ -14,6 +14,7 @@ require 'github_changelog_generator/task'
 # on Travis with --without development
 begin
   require 'puppet_blacksmith/rake_tasks'
+  require 'puppet-strings/tasks'
 rescue LoadError
 end
 
@@ -28,7 +29,7 @@ Rake::Task[:lint].clear
 
 PuppetLint.configuration.relative = true
 PuppetLint.configuration.disable_arrow_alignment
-PuppetLint.configuration.disable_80chars
+PuppetLint.configuration.disable_140chars
 PuppetLint.configuration.disable_class_inherits_from_params_class
 PuppetLint.configuration.disable_class_parameter_defaults
 PuppetLint.configuration.disable_documentation

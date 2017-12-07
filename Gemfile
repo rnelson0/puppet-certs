@@ -2,7 +2,8 @@ source "https://rubygems.org"
 
 group :test do
   gem "rake"
-  gem "puppet", ENV['PUPPET_GEM_VERSION'] || '~> 4.0'
+  gem "puppet", ENV['PUPPET_GEM_VERSION'] || '~> 5.0'
+
   gem "rspec"
   gem "rspec-puppet"
   gem "puppetlabs_spec_helper"
@@ -31,6 +32,9 @@ group :test do
 end
 
 group :development do
+  # Experimental testing with puppet-strings
+  gem "puppet-strings"
+  gem "rgen"
 end
 
 group :system_tests do
