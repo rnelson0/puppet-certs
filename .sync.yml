@@ -10,3 +10,5 @@ Rakefile:
   default_disabled_lint_checks:
     - '140chars'
     - 'arrow_alignment'
+spec/spec_helper.rb:
+  hiera_config: 'spec/fixtures/hiera.yaml'
