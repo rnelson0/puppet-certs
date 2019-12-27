@@ -1,7 +1,7 @@
 {
   "name": "rnelson0-certs",
-  "version": "0.7.0",
-  "author": "Rob Nelson",
+  "version": "1.0.0",
+  "author": "rnelson0",
   "summary": "SSL Certificate File Management",
   "license": "Apache-2.0",
   "source": "https://github.com/rnelson0/puppet-certs",
@@ -14,7 +14,15 @@
     {
       "operatingsystem": "RedHat",
       "operatingsystemrelease": [
-        "6.5"
+        "6",
+        "7"
+      ]
+    },
+    {
+      "operatingsystem": "CentOS",
+      "operatingsystemrelease": [
+        "6",
+        "7"
       ]
     }
   ],
@@ -25,6 +33,6 @@
     }
   ],
   "pdk-version": "1.15.0",
-  "template-url": "pdk-default#1.15.0",
-  "template-ref": "tags/1.15.0-0-g0bc522e"
+    "template-url": "pdk-default#1.15.0",
+    "template-ref": "tags/1.15.0-0-g0bc522e"
 }
