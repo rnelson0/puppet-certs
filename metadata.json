@@ -5,17 +5,26 @@
   "summary": "SSL Certificate File Management",
   "license": "Apache-2.0",
   "source": "https://github.com/rnelson0/puppet-certs",
-  "issues_url": "https://github.com/rnelson0/puppet-certs/issues",
   "project_page": "https://github.com/rnelson0/puppet-certs",
+  "issues_url": "https://github.com/rnelson0/puppet-certs/issues",
+  "dependencies": [
+
+  ],
   "operatingsystem_support": [
     {
-      "operatingsystem":"RedHat",
+      "operatingsystem": "RedHat",
       "operatingsystemrelease": [
         "6.5"
       ]
     }
   ],
-  "dependencies": [
-  ]
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": ">= 4.10.0 < 7.0.0"
+    }
+  ],
+  "pdk-version": "1.15.0",
+  "template-url": "pdk-default#1.15.0",
+  "template-ref": "tags/1.15.0-0-g0bc522e"
 }
-
