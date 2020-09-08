@@ -59,3 +59,12 @@ Creates the same crt and key files in `/etc/httpd/ssl.d`.
 
 When providing the certificate files to the `apache::vhost` or similar classes
 it is best to ensure they are properly dependent upon the `certs::vhost`.
+
+Use vault to get your your certs and keys.
+
+    certs::vhost { 'www.example.com':
+      target_path => '/etc/httpd/ssl.d',
+      source_path => '/v1/kv/puppet/ssl',
+      vault       => true,
+    }
+
