@@ -1,5 +1,6 @@
 require 'puppetlabs_spec_helper/module_spec_helper'
 require 'rspec-puppet-facts'
+require 'rspec-puppet-utils'
 
 require 'spec_helper_local' if File.file?(File.join(File.dirname(__FILE__), 'spec_helper_local.rb'))
 
@@ -37,6 +38,10 @@ RSpec.configure do |c|
     # set to strictest setting for testing
     # by default Puppet runs at warning level
     Puppet.settings[:strict] = :warning
+
+    MockFunction.new('vault_lookup') { |f|
+      f.stubbed.returns({ :value => '{“crt”: “-----BEGIN CERTIFICATE-----\nTEST\n-----END CERTIFICATE-----“,”key”: “-----BEGIN PRIVATE KEY-----\nTEST\n-----END PRIVATE KEY-----“}' })
+    }
   end
   c.filter_run_excluding(bolt: true) unless ENV['GEM_BOLT']
   c.after(:suite) do

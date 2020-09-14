@@ -55,26 +55,38 @@ define certs::vhost (
     fail('You must provide a target_ path for the certs to certs::vhost.')
   }
 
+  $defaults = { ensure => file, notify => Service[$service] }
+
+  $crt_name = "${name}.crt"
+  $key_name = "${name}.key"
+
   if $vault {
     $vault_ssl_hash = vault_lookup("${source_path}/${source_name}")
-    $crt = $vault_ssl_hash['crt']
-    $key = $vault_ssl_hash['key']
+    file { $crt_name:
+      ensure  => file,
+      path    => "${target_path}/${crt_name}",
+      content => $vault_ssl_hash['crt'],
+      notify  => Service[$service],
+    }
+    -> file { $key_name:
+      ensure  => file,
+      path    => "${target_path}/${key_name}",
+      content => $vault_ssl_hash['key'],
+      notify  => Service[$service],
+    }
   }
   else {
-    $crt = file("${source_path}/${source_name}.crt")
-    $key = file("${source_path}/${source_name}.key")
-  }
-
-  file { $crt:
-    ensure  => file,
-    path    => "${target_path}/${crt}${source_path}.crt",
-    content => "${crt}",
-    notify  => Service[$service],
-  }
-  -> file { $key:
-    ensure  => file,
-    path    => "${target_path}/${key}.key",
-    content => "${key}",
-    notify  => Service[$service],
+    file { $crt_name:
+      ensure => file,
+      path   => "${target_path}/${crt_name}",
+      source => "${source_path}/${source_name}.crt",
+      notify => Service[$service],
+    }
+    -> file { $key_name:
+      ensure => file,
+      path   => "${target_path}/${key_name}",
+      source => "${source_path}/${source_name}.key",
+      notify => Service[$service],
+    }
   }
 }
