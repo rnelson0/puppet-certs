@@ -55,8 +55,6 @@ define certs::vhost (
     fail('You must provide a target_ path for the certs to certs::vhost.')
   }
 
-  $defaults = { ensure => file, notify => Service[$service] }
-
   $crt_name = "${name}.crt"
   $key_name = "${name}.key"
 

@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'rspec-puppet-utils'
 
 describe 'certs::vhost' do
   let(:pre_condition) do
@@ -65,17 +66,39 @@ describe 'certs::vhost' do
     let(:params) do
       {
         source_path: 'v1/api/kv/certs/puppet/',
-        vault: true
+        vault: true,
       }
+    end
+
+    let(:expected_content) do
+      {
+        crt: "-----BEGIN CERTIFICATE-----\nTEST\n-----END CERTIFICATE-----",
+        key: "-----BEGIN PRIVATE KEY-----\nTEST\n-----END PRIVATE KEY----",
+      }
+    end
+
+    before :each do
+      MockFunction.new('vault_lookup') do |f|
+        f.stubbed.returns(value: '{“crt”: “-----BEGIN CERTIFICATE-----\nTEST\n-----END CERTIFICATE-----“,”key”: “-----BEGIN PRIVATE KEY-----\nTEST\n-----END PRIVATE KEY-----“}')
+      end
     end
 
     it {
       is_expected.to contain_file('www.example.com.crt').with(path: '/etc/ssl/certs/www.example.com.crt',
+                                                              content: expected_content['crt'],
                                                               notify: 'Service[httpd]')
     }
     it {
       is_expected.to contain_file('www.example.com.key').with(path: '/etc/ssl/certs/www.example.com.key',
+                                                              content: expected_content['key'],
                                                               notify: 'Service[httpd]')
+    }
+
+    it {
+      is_expected.to contain_file('www.example.com.crt').with_content(expected_content['crt'])
+    }
+    it {
+      is_expected.to contain_file('www.example.com.key').with_content(expected_content['key'])
     }
   end
 end
