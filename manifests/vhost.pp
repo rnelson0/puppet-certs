@@ -60,6 +60,9 @@ define certs::vhost (
 
   if $vault {
     $vault_ssl_hash = vault_lookup("${source_path}/${source_name}")
+
+    notify { "$vault_ssl_hash": }
+
     file { $crt_name:
       ensure  => file,
       path    => "${target_path}/${crt_name}",

@@ -73,32 +73,26 @@ describe 'certs::vhost' do
     let(:expected_content) do
       {
         crt: "-----BEGIN CERTIFICATE-----\nTEST\n-----END CERTIFICATE-----",
-        key: "-----BEGIN PRIVATE KEY-----\nTEST\n-----END PRIVATE KEY----",
+        key: "-----BEGIN PRIVATE KEY-----\nTEST\n-----END PRIVATE KEY-----",
       }
     end
 
     before :each do
       MockFunction.new('vault_lookup') do |f|
-        f.stubbed.returns(value: '{“crt”: “-----BEGIN CERTIFICATE-----\nTEST\n-----END CERTIFICATE-----“,”key”: “-----BEGIN PRIVATE KEY-----\nTEST\n-----END PRIVATE KEY-----“}')
+        f.stubbed.returns(crt: '-----BEGIN CERTIFICATE-----\nTEST\n-----END CERTIFICATE-----', key: '-----BEGIN PRIVATE KEY-----\nTEST\n-----END PRIVATE KEY-----')
       end
     end
-
+    it { pp catalogue.resources }
     it {
       is_expected.to contain_file('www.example.com.crt').with(path: '/etc/ssl/certs/www.example.com.crt',
-                                                              content: expected_content['crt'],
+                                                              content: expected_content[:crt],
                                                               notify: 'Service[httpd]')
     }
     it {
       is_expected.to contain_file('www.example.com.key').with(path: '/etc/ssl/certs/www.example.com.key',
-                                                              content: expected_content['key'],
+                                                              content: expected_content[:key],
                                                               notify: 'Service[httpd]')
     }
 
-    it {
-      is_expected.to contain_file('www.example.com.crt').with_content(expected_content['crt'])
-    }
-    it {
-      is_expected.to contain_file('www.example.com.key').with_content(expected_content['key'])
-    }
   end
 end
