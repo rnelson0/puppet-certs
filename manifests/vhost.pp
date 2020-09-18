@@ -61,18 +61,16 @@ define certs::vhost (
   if $vault {
     $vault_ssl_hash = vault_lookup("${source_path}/${source_name}")
 
-    notify { "$vault_ssl_hash": }
-
     file { $crt_name:
       ensure  => file,
       path    => "${target_path}/${crt_name}",
-      content => $vault_ssl_hash['crt'],
+      content => inline_epp('<%= $data %>', {"data" => $vault_ssl_hash['crt']}),
       notify  => Service[$service],
     }
     -> file { $key_name:
       ensure  => file,
       path    => "${target_path}/${key_name}",
-      content => $vault_ssl_hash['key'],
+      content => inline_epp('<%= $data %>', {"data" => $vault_ssl_hash['key']}),
       notify  => Service[$service],
     }
   }

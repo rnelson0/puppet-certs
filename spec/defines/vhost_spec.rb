@@ -65,7 +65,7 @@ describe 'certs::vhost' do
   context 'with vault => true' do
     let(:params) do
       {
-        source_path: 'v1/api/kv/certs/puppet/',
+        source_path: '/v1/api/kv/certs/puppet/',
         vault: true,
       }
     end
@@ -78,11 +78,14 @@ describe 'certs::vhost' do
     end
 
     before :each do
-      MockFunction.new('vault_lookup') do |f|
-        f.stubbed.returns(crt: '-----BEGIN CERTIFICATE-----\nTEST\n-----END CERTIFICATE-----', key: '-----BEGIN PRIVATE KEY-----\nTEST\n-----END PRIVATE KEY-----')
+      Puppet::Parser::Functions.newfunction(:vault_lookup, :type => :rvalue) do |args|
+        {
+          "crt" => "-----BEGIN CERTIFICATE-----\nTEST\n-----END CERTIFICATE-----",
+          "key" => "-----BEGIN PRIVATE KEY-----\nTEST\n-----END PRIVATE KEY-----"
+        }
       end
     end
-    it { pp catalogue.resources }
+
     it {
       is_expected.to contain_file('www.example.com.crt').with(path: '/etc/ssl/certs/www.example.com.crt',
                                                               content: expected_content[:crt],
