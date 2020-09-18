@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'rspec-puppet-utils'
 
 describe 'certs::vhost' do
   let(:pre_condition) do
