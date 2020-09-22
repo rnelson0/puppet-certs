@@ -69,32 +69,24 @@ describe 'certs::vhost' do
       }
     end
 
-    let(:expected_content) do
-      {
-        crt: "-----BEGIN CERTIFICATE-----\nTEST\n-----END CERTIFICATE-----",
-        key: "-----BEGIN PRIVATE KEY-----\nTEST\n-----END PRIVATE KEY-----",
-      }
-    end
-
     before :each do
-      Puppet::Parser::Functions.newfunction(:vault_lookup, :type => :rvalue) do |args|
+      Puppet::Parser::Functions.newfunction(:vault_lookup, type: :rvalue) do |args| # rubocop:disable Lint/UnusedBlockArgument
         {
-          "crt" => "-----BEGIN CERTIFICATE-----\nTEST\n-----END CERTIFICATE-----",
-          "key" => "-----BEGIN PRIVATE KEY-----\nTEST\n-----END PRIVATE KEY-----"
+          'crt' => "-----BEGIN CERTIFICATE-----\nTEST\n-----END CERTIFICATE-----",
+          'key' => "-----BEGIN PRIVATE KEY-----\nTEST\n-----END PRIVATE KEY-----",
         }
       end
     end
 
     it {
       is_expected.to contain_file('www.example.com.crt').with(path: '/etc/ssl/certs/www.example.com.crt',
-                                                              content: expected_content[:crt],
+                                                              content: %r{^-----BEGIN CERTIFICATE-----\n([a-zA-Z0-9]\n?)+\n-----END CERTIFICATE-----}m,
                                                               notify: 'Service[httpd]')
     }
     it {
       is_expected.to contain_file('www.example.com.key').with(path: '/etc/ssl/certs/www.example.com.key',
-                                                              content: expected_content[:key],
+                                                              content: %r{^-----BEGIN PRIVATE KEY-----\n([a-zA-Z0-9]\n?)+\n-----END PRIVATE KEY-----}m,
                                                               notify: 'Service[httpd]')
     }
-
   end
 end
