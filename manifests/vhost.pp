@@ -32,10 +32,18 @@
 # @param service
 #  Name of the web server service to notify when certificates are updated.
 #  Default: 'http'
+# @param source_name
+#  Name of the file to use if different than the title of the resource
+#  Default: '$name'
+# @param vault
+#  Use vault_lookup to query vault service for crt/key pair
+#  Default: 'undef'
 define certs::vhost (
+  $source_name = $name,
   $source_path = undef,
   $target_path = '/etc/ssl/certs',
   $service     = 'httpd',
+  $vault       = undef,
 ) {
   if ($name == undef) {
     fail('You must provide a name value for the vhost to certs::vhost.')
@@ -47,19 +55,37 @@ define certs::vhost (
     fail('You must provide a target_ path for the certs to certs::vhost.')
   }
 
-  $crt = "${name}.crt"
-  $key = "${name}.key"
+  $crt_name = "${name}.crt"
+  $key_name = "${name}.key"
 
-  file { $crt:
-    ensure => file,
-    path   => "${target_path}/${crt}",
-    source => "${source_path}/${crt}",
-    notify => Service[$service],
+  if $vault {
+    $vault_ssl_hash = vault_lookup("${source_path}/${source_name}")
+
+    file { $crt_name:
+      ensure  => file,
+      path    => "${target_path}/${crt_name}",
+      content => inline_epp('<%= $data %>', {'data' => $vault_ssl_hash['crt']}),
+      notify  => Service[$service],
+    }
+    -> file { $key_name:
+      ensure  => file,
+      path    => "${target_path}/${key_name}",
+      content => inline_epp('<%= $data %>', {'data' => $vault_ssl_hash['key']}),
+      notify  => Service[$service],
+    }
   }
-  -> file { $key:
-    ensure => file,
-    path   => "${target_path}/${key}",
-    source => "${source_path}/${key}",
-    notify => Service[$service],
+  else {
+    file { $crt_name:
+      ensure => file,
+      path   => "${target_path}/${crt_name}",
+      source => "${source_path}/${source_name}.crt",
+      notify => Service[$service],
+    }
+    -> file { $key_name:
+      ensure => file,
+      path   => "${target_path}/${key_name}",
+      source => "${source_path}/${source_name}.key",
+      notify => Service[$service],
+    }
   }
 }
