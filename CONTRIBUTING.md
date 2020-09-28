@@ -54,7 +54,7 @@ add tests if you're adding new functionality. If you've not used
 about how best to test your new feature. Running the test suite is done
 with:
 
-    pdk bundle exec rake spec
+    pdk test unit
 
 Note also you can run the syntax, style and unit tests in one go with:
 
