@@ -42,6 +42,10 @@ against your manifests, templates, metadata, and spec tests using rubocop,
 
     pdk validate
 
+If any issues are found, the PDK can perform auto-corrections with the `-a` flag
+
+    pdk validate -a
+
 ## Running the unit tests
 
 The unit test suite covers most of the code, as mentioned above please
