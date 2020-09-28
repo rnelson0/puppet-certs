@@ -20,7 +20,7 @@ will likely make it into a release a little quicker.
 ## Dependencies
 
 This module is developed using PDK, and all dependencies are managed by
-[Bundler](http://bundler.io/) provided through PDK aoccording to the
+[Bundler](http://bundler.io/) provided through PDK according to the
 [Puppet support matrix](http://docs.puppetlabs.com/guides/platforms.html#ruby-versions).
 
 By default the tests use a baseline version of Puppet.
