@@ -20,8 +20,8 @@ will likely make it into a release a little quicker.
 ## Dependencies
 
 This module is developed using PDK, and all dependencies are managed by
-[Bundler](http://bundler.io/) provided through PDK according to the
-[Puppet support matrix](http://docs.puppetlabs.com/guides/platforms.html#ruby-versions).
+[Bundler](http://bundler.io/) provided through PDK according to the [best
+pracrices](https://puppet.com/docs/pdk/1.x/pdk_testing.html).
 
 By default the tests use a baseline version of Puppet.
 
@@ -55,7 +55,3 @@ about how best to test your new feature. Running the test suite is done
 with:
 
     pdk test unit
-
-Note also you can run the syntax, style and unit tests in one go with:
-
-    pdk bundle exec rake test

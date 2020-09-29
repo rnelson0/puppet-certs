@@ -60,7 +60,7 @@ Creates the same crt and key files in `/etc/httpd/ssl.d`.
 When providing the certificate files to the `apache::vhost` or similar classes
 it is best to ensure they are properly dependent upon the `certs::vhost`.
 
-Use vault to get your your certs and keys.
+To use the vault options, you must have a module that is API compatible with [puppet-vault_lookup](https://forge.puppet.com/puppet/vault_lookup) installed. If you are not using vault, this dependency is optional.
 
     certs::vhost { 'www.example.com':
       target_path => '/etc/httpd/ssl.d',
