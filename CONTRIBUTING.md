@@ -21,7 +21,7 @@ will likely make it into a release a little quicker.
 
 This module is developed using PDK, and all dependencies are managed by
 [Bundler](http://bundler.io/) provided through PDK according to the [best
-pracrices](https://puppet.com/docs/pdk/1.x/pdk_testing.html).
+practices](https://puppet.com/docs/pdk/1.x/pdk_testing.html).
 
 By default the tests use a baseline version of Puppet.
 
