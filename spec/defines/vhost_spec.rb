@@ -16,13 +16,15 @@ describe 'certs::vhost' do
 
     it {
       is_expected.to contain_file('www.example.com.crt').with(path: '/etc/ssl/certs/www.example.com.crt',
-                                                              source: 'puppet:///othermodule/www.example.com.crt',
-                                                              notify: 'Service[httpd]')
+                                                              source: 'puppet:///othermodule/www.example.com.crt')
     }
     it {
       is_expected.to contain_file('www.example.com.key').with(path: '/etc/ssl/certs/www.example.com.key',
-                                                              source: 'puppet:///othermodule/www.example.com.key',
-                                                              notify: 'Service[httpd]')
+                                                              source: 'puppet:///othermodule/www.example.com.key')
+    }
+
+    it {
+      is_expected.to contain_certs__vhost('www.example.com').with(notify: ["Service[httpd]"])
     }
   end
 
@@ -42,6 +44,10 @@ describe 'certs::vhost' do
       is_expected.to contain_file('www.example.com.key').with(path: '/etc/httpd/ssl.d/www.example.com.key',
                                                               source: 'puppet:///othermodule/www.example.com.key')
     }
+
+    it {
+      is_expected.to contain_certs__vhost('www.example.com').with(notify: ["Service[httpd]"])
+    }
   end
 
   context 'with service => nginx' do
@@ -57,7 +63,7 @@ describe 'certs::vhost' do
     end
 
     it {
-      is_expected.to contain_file('www.example.com.crt').with(notify: 'Service[nginx]')
+      is_expected.to contain_certs__vhost('www.example.com').with(notify: ["Service[nginx]"])
     }
   end
 
@@ -80,13 +86,37 @@ describe 'certs::vhost' do
 
     it {
       is_expected.to contain_file('www.example.com.crt').with(path: '/etc/ssl/certs/www.example.com.crt',
-                                                              content: %r{^-----BEGIN CERTIFICATE-----\n([a-zA-Z0-9]\n?)+\n-----END CERTIFICATE-----}m,
-                                                              notify: 'Service[httpd]')
+                                                              content: %r{^-----BEGIN CERTIFICATE-----\n([a-zA-Z0-9]\n?)+\n-----END CERTIFICATE-----}m,)
     }
     it {
       is_expected.to contain_file('www.example.com.key').with(path: '/etc/ssl/certs/www.example.com.key',
-                                                              content: %r{^-----BEGIN PRIVATE KEY-----\n([a-zA-Z0-9]\n?)+\n-----END PRIVATE KEY-----}m,
-                                                              notify: 'Service[httpd]')
+                                                              content: %r{^-----BEGIN PRIVATE KEY-----\n([a-zA-Z0-9]\n?)+\n-----END PRIVATE KEY-----}m)
+    }
+
+    it {
+      is_expected.to contain_certs__vhost('www.example.com').with(notify: ["Service[httpd]"])
     }
   end
+  context 'with notify_service => false' do
+    let(:params) do
+      {
+        source_path: 'puppet:///othermodule',
+        notify_service: false,
+      }
+    end
+
+    it {
+      is_expected.to contain_file('www.example.com.crt').with(path: '/etc/ssl/certs/www.example.com.crt',
+                                                              source: 'puppet:///othermodule/www.example.com.crt')
+    }
+    it {
+      is_expected.to contain_file('www.example.com.key').with(path: '/etc/ssl/certs/www.example.com.key',
+                                                              source: 'puppet:///othermodule/www.example.com.key')
+    }
+
+    it {
+      is_expected.to_not contain_certs__vhost('www.example.com').with(notify: ["Service[httpd]"])
+    }
+  end
+
 end
