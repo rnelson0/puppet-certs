@@ -24,7 +24,7 @@ describe 'certs::vhost' do
     }
 
     it {
-      is_expected.to contain_certs__vhost('www.example.com').with(notify: ["Service[httpd]"])
+      is_expected.to contain_certs__vhost('www.example.com').with(notify: ['Service[httpd]'])
     }
   end
 
@@ -46,7 +46,7 @@ describe 'certs::vhost' do
     }
 
     it {
-      is_expected.to contain_certs__vhost('www.example.com').with(notify: ["Service[httpd]"])
+      is_expected.to contain_certs__vhost('www.example.com').with(notify: ['Service[httpd]'])
     }
   end
 
@@ -63,7 +63,7 @@ describe 'certs::vhost' do
     end
 
     it {
-      is_expected.to contain_certs__vhost('www.example.com').with(notify: ["Service[nginx]"])
+      is_expected.to contain_certs__vhost('www.example.com').with(notify: ['Service[nginx]'])
     }
   end
 
@@ -86,7 +86,7 @@ describe 'certs::vhost' do
 
     it {
       is_expected.to contain_file('www.example.com.crt').with(path: '/etc/ssl/certs/www.example.com.crt',
-                                                              content: %r{^-----BEGIN CERTIFICATE-----\n([a-zA-Z0-9]\n?)+\n-----END CERTIFICATE-----}m,)
+                                                              content: %r{^-----BEGIN CERTIFICATE-----\n([a-zA-Z0-9]\n?)+\n-----END CERTIFICATE-----}m)
     }
     it {
       is_expected.to contain_file('www.example.com.key').with(path: '/etc/ssl/certs/www.example.com.key',
@@ -94,7 +94,7 @@ describe 'certs::vhost' do
     }
 
     it {
-      is_expected.to contain_certs__vhost('www.example.com').with(notify: ["Service[httpd]"])
+      is_expected.to contain_certs__vhost('www.example.com').with(notify: ['Service[httpd]'])
     }
   end
   context 'with notify_service => false' do
@@ -115,8 +115,7 @@ describe 'certs::vhost' do
     }
 
     it {
-      is_expected.to_not contain_certs__vhost('www.example.com').with(notify: ["Service[httpd]"])
+      is_expected.not_to contain_certs__vhost('www.example.com').with(notify: ['Service[httpd]'])
     }
   end
-
 end
