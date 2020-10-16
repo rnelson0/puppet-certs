@@ -39,11 +39,12 @@
 #  Use vault_lookup to query vault service for crt/key pair
 #  Default: 'undef'
 define certs::vhost (
-  $source_name = $name,
-  $source_path = undef,
-  $target_path = '/etc/ssl/certs',
-  $service     = 'httpd',
-  $vault       = undef,
+  $source_name    = $name,
+  $source_path    = undef,
+  $target_path    = '/etc/ssl/certs',
+  $service        = 'httpd',
+  $vault          = undef,
+  $notify_service = true,
 ) {
   if ($name == undef) {
     fail('You must provide a name value for the vhost to certs::vhost.')
@@ -65,13 +66,11 @@ define certs::vhost (
       ensure  => file,
       path    => "${target_path}/${crt_name}",
       content => inline_epp('<%= $data %>', {'data' => $vault_ssl_hash['crt']}),
-      notify  => Service[$service],
     }
     -> file { $key_name:
       ensure  => file,
       path    => "${target_path}/${key_name}",
       content => inline_epp('<%= $data %>', {'data' => $vault_ssl_hash['key']}),
-      notify  => Service[$service],
     }
   }
   else {
@@ -79,13 +78,12 @@ define certs::vhost (
       ensure => file,
       path   => "${target_path}/${crt_name}",
       source => "${source_path}/${source_name}.crt",
-      notify => Service[$service],
     }
     -> file { $key_name:
       ensure => file,
       path   => "${target_path}/${key_name}",
       source => "${source_path}/${source_name}.key",
-      notify => Service[$service],
     }
   }
+  if $notify_service { Certs::Vhost[$title] ~> Service[$service] }
 }
