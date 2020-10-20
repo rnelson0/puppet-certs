@@ -2,12 +2,21 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v1.1.1](https://github.com/rnelson0/puppet-certs/tree/v1.1.1) (2020-10-20)
+
+[Full Changelog](https://github.com/rnelson0/puppet-certs/compare/v1.1.0...v1.1.1)
+
+### Fixed
+
+- Add ability to disable service notify [\#38](https://github.com/rnelson0/puppet-certs/pull/38) ([ekingme](https://github.com/ekingme))
+
 ## [v1.1.0](https://github.com/rnelson0/puppet-certs/tree/v1.1.0) (2020-09-30)
 
 [Full Changelog](https://github.com/rnelson0/puppet-certs/compare/v1.0.0...v1.1.0)
 
 ### Added
 
+- v1.1.0 release [\#37](https://github.com/rnelson0/puppet-certs/pull/37) ([rnelson0](https://github.com/rnelson0))
 - Updating contributing docs, mock\_with Rspec for future compatibility, and puppet-vault\_lookup dependency [\#36](https://github.com/rnelson0/puppet-certs/pull/36) ([ekingme](https://github.com/ekingme))
 - Adding support for reading crt/key from Vault [\#35](https://github.com/rnelson0/puppet-certs/pull/35) ([ekingme](https://github.com/ekingme))
 
