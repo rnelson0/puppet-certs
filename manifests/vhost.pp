@@ -39,12 +39,13 @@
 #  Use vault_lookup to query vault service for crt/key pair
 #  Default: 'undef'
 define certs::vhost (
-  $source_name    = $name,
-  $source_path    = undef,
-  $target_path    = '/etc/ssl/certs',
-  $service        = 'httpd',
-  $vault          = undef,
-  $notify_service = true,
+  $source_name                      = $name,
+  $source_path                      = undef,
+  $target_path                      = '/etc/ssl/certs',
+  $service                          = 'httpd',
+  $vault                            = undef,
+  $notify_service                   = true,
+  Enum['crt','pem'] $cert_extension = 'crt',
 ) {
   if ($name == undef) {
     fail('You must provide a name value for the vhost to certs::vhost.')
@@ -56,15 +57,15 @@ define certs::vhost (
     fail('You must provide a target_ path for the certs to certs::vhost.')
   }
 
-  $crt_name = "${name}.crt"
+  $cert_name = "${name}.${cert_extension}"
   $key_name = "${name}.key"
 
   if $vault {
     $vault_ssl_hash = vault_lookup("${source_path}/${source_name}")
 
-    file { $crt_name:
+    file { $cert_name:
       ensure  => file,
-      path    => "${target_path}/${crt_name}",
+      path    => "${target_path}/${cert_name}",
       content => inline_epp('<%= $data %>', {'data' => $vault_ssl_hash['crt']}),
     }
     -> file { $key_name:
@@ -74,9 +75,9 @@ define certs::vhost (
     }
   }
   else {
-    file { $crt_name:
+    file { $cert_name:
       ensure => file,
-      path   => "${target_path}/${crt_name}",
+      path   => "${target_path}/${cert_name}",
       source => "${source_path}/${source_name}.crt",
     }
     -> file { $key_name:
