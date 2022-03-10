@@ -2,9 +2,14 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
-## [v1.1.1](https://github.com/rnelson0/puppet-certs/tree/v1.1.1) (2020-10-20)
+## [v1.2.0](https://github.com/rnelson0/puppet-certs/tree/v1.2.0) (2022-03-10)
 
-[Full Changelog](https://github.com/rnelson0/puppet-certs/compare/v1.1.0...v1.1.1)
+[Full Changelog](https://github.com/rnelson0/puppet-certs/compare/v1.1.0...v1.2.0)
+
+### Added
+
+- add param for extension [\#41](https://github.com/rnelson0/puppet-certs/pull/41) ([thunderpants73](https://github.com/thunderpants73))
+- v1.1.1 release [\#39](https://github.com/rnelson0/puppet-certs/pull/39) ([rnelson0](https://github.com/rnelson0))
 
 ### Fixed
 
