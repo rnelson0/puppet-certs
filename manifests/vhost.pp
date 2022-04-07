@@ -46,6 +46,7 @@ define certs::vhost (
   $vault                            = undef,
   $notify_service                   = true,
   Enum['crt','pem'] $cert_extension = 'crt',
+  $file_options                     = {}
 ) {
   if ($name == undef) {
     fail('You must provide a name value for the vhost to certs::vhost.')
@@ -67,11 +68,13 @@ define certs::vhost (
       ensure  => file,
       path    => "${target_path}/${cert_name}",
       content => inline_epp('<%= $data %>', {'data' => $vault_ssl_hash['crt']}),
+      * => $file_options
     }
     -> file { $key_name:
       ensure  => file,
       path    => "${target_path}/${key_name}",
       content => inline_epp('<%= $data %>', {'data' => $vault_ssl_hash['key']}),
+      * => $file_options
     }
   }
   else {
@@ -79,11 +82,13 @@ define certs::vhost (
       ensure => file,
       path   => "${target_path}/${cert_name}",
       source => "${source_path}/${source_name}.crt",
+      * => $file_options
     }
     -> file { $key_name:
       ensure => file,
       path   => "${target_path}/${key_name}",
       source => "${source_path}/${source_name}.key",
+      * => $file_options
     }
   }
   if $notify_service { Certs::Vhost[$title] ~> Service[$service] }
