@@ -46,7 +46,7 @@ define certs::vhost (
   $vault                            = undef,
   $notify_service                   = true,
   Enum['crt','pem'] $cert_extension = 'crt',
-  $file_options                     = {}
+  $file_options                     = {},
 ) {
   if ($name == undef) {
     fail('You must provide a name value for the vhost to certs::vhost.')
