@@ -56,19 +56,25 @@ define certs::vhost (
   if ($source_path == undef) {
     fail('You must provide a source_path for the SSL files to certs::vhost.')
   }
-  if ($target_path == undef) {
-    fail('You must provide a target_ path for the certs to certs::vhost.')
+  if ($target_path == undef and $crt_target_path == undef and $key_target_path == undef) {
+    fail('You must provide a target_path or key_target_path and crt_target_path for the certs to certs::vhost.')
   }
 
   $cert_name = "${name}.${cert_extension}"
   $key_name = "${name}.key"
 
 
-  if $crt_target_path == undef {
-    $crt_target_path = $target_path
+  if $crt_target_path {
+    $crt_target_path_final = $crt_target_path
   }
-  if $key_target_path == undef {
-    $key_target_path = $target_path
+  else {
+    $crt_target_path_final = $target_path
+  }
+  if $key_target_path {
+    $key_target_path_final = $key_target_path
+  }
+  else {
+    $key_target_path_final = $target_path
   }
 
 
@@ -77,13 +83,13 @@ define certs::vhost (
 
     file { $cert_name:
       ensure  => file,
-      path    => "${crt_target_path}/${cert_name}",
+      path    => "${crt_target_path_final}/${cert_name}",
       content => inline_epp('<%= $data %>', {'data' => $vault_ssl_hash['crt']}),
       * => $file_options
     }
     -> file { $key_name:
       ensure  => file,
-      path    => "${key_target_path}/${key_name}",
+      path    => "${key_target_path_final}/${key_name}",
       content => inline_epp('<%= $data %>', {'data' => $vault_ssl_hash['key']}),
       * => $file_options
     }
@@ -91,13 +97,13 @@ define certs::vhost (
   else {
     file { $cert_name:
       ensure => file,
-      path   => "${crt_target_path}/${cert_name}",
+      path   => "${crt_target_path_final}/${cert_name}",
       source => "${source_path}/${source_name}.crt",
       * => $file_options
     }
     -> file { $key_name:
       ensure => file,
-      path   => "${key_target_path}/${key_name}",
+      path   => "${key_target_path_final}/${key_name}",
       source => "${source_path}/${source_name}.key",
       * => $file_options
     }
