@@ -39,16 +39,16 @@
 #  Use vault_lookup to query vault service for crt/key pair
 #  Default: 'undef'
 define certs::vhost (
-  String $source_name                      = $name,
-  String $source_path                      = undef,
-  String $target_path                      = '/etc/ssl/certs',
-  String $crt_target_path                  = undef,
-  String $key_target_path                  = undef,
-  String $service                          = 'httpd',
-  Bool $vault                            = undef,
-  Bool $notify_service                   = true,
+  String $source_name               = $name,
+  String $source_path               = undef,
+  String $target_path               = '/etc/ssl/certs',
+  String $crt_target_path           = undef,
+  String $key_target_path           = undef,
+  String $service                   = 'httpd',
+  Boolean $vault                    = undef,
+  Boolean $notify_service           = true,
   Enum['crt','pem'] $cert_extension = 'crt',
-  Hash $file_options                     = {},
+  Hash $file_options                = {},
 ) {
   if ($name == undef) {
     fail('You must provide a name value for the vhost to certs::vhost.')
