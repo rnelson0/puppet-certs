@@ -45,7 +45,7 @@ define certs::vhost (
   String $crt_target_path           = undef,
   String $key_target_path           = undef,
   String $service                   = 'httpd',
-  Boolean $vault                    = undef,
+  Boolean $vault                    = false,
   Boolean $notify_service           = true,
   Enum['crt','pem'] $cert_extension = 'crt',
   Hash $file_options                = {},
