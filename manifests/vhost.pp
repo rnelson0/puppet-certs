@@ -42,6 +42,8 @@ define certs::vhost (
   $source_name                      = $name,
   $source_path                      = undef,
   $target_path                      = '/etc/ssl/certs',
+  $crt_target_path                  = undef,
+  $key_target_path                  = undef,
   $service                          = 'httpd',
   $vault                            = undef,
   $notify_service                   = true,
@@ -61,18 +63,27 @@ define certs::vhost (
   $cert_name = "${name}.${cert_extension}"
   $key_name = "${name}.key"
 
+
+  if $crt_target_path == undef {
+    $crt_target_path = $target_path
+  }
+  if $key_target_path == undef {
+    $key_target_path = $target_path
+  }
+
+
   if $vault {
     $vault_ssl_hash = vault_lookup("${source_path}/${source_name}")
 
     file { $cert_name:
       ensure  => file,
-      path    => "${target_path}/${cert_name}",
+      path    => "${crt_target_path}/${cert_name}",
       content => inline_epp('<%= $data %>', {'data' => $vault_ssl_hash['crt']}),
       * => $file_options
     }
     -> file { $key_name:
       ensure  => file,
-      path    => "${target_path}/${key_name}",
+      path    => "${key_target_path}/${key_name}",
       content => inline_epp('<%= $data %>', {'data' => $vault_ssl_hash['key']}),
       * => $file_options
     }
@@ -80,13 +91,13 @@ define certs::vhost (
   else {
     file { $cert_name:
       ensure => file,
-      path   => "${target_path}/${cert_name}",
+      path   => "${crt_target_path}/${cert_name}",
       source => "${source_path}/${source_name}.crt",
       * => $file_options
     }
     -> file { $key_name:
       ensure => file,
-      path   => "${target_path}/${key_name}",
+      path   => "${key_target_path}/${key_name}",
       source => "${source_path}/${source_name}.key",
       * => $file_options
     }
