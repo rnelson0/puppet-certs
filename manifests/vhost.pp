@@ -56,9 +56,6 @@ define certs::vhost (
   if ($source_path == undef) {
     fail('You must provide a source_path for the SSL files to certs::vhost.')
   }
-  if ($target_path == undef and $crt_target_path == undef and $key_target_path == undef) {
-    fail('You must provide a target_path or key_target_path and crt_target_path for the certs to certs::vhost.')
-  }
 
   $cert_name = "${name}.${cert_extension}"
   $key_name = "${name}.key"
