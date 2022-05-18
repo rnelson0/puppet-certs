@@ -42,8 +42,8 @@ define certs::vhost (
   String $source_name               = $name,
   String $source_path               = undef,
   String $target_path               = '/etc/ssl/certs',
-  String $crt_target_path           = undef,
-  String $key_target_path           = undef,
+  String $crt_target_path           = '',
+  String $key_target_path           = '',
   String $service                   = 'httpd',
   Boolean $vault                    = false,
   Boolean $notify_service           = true,
@@ -61,13 +61,13 @@ define certs::vhost (
   $key_name = "${name}.key"
 
 
-  if $crt_target_path {
+  if $crt_target_path != '' {
     $crt_target_path_final = $crt_target_path
   }
   else {
     $crt_target_path_final = $target_path
   }
-  if $key_target_path {
+  if $key_target_path != '' {
     $key_target_path_final = $key_target_path
   }
   else {
