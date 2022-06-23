@@ -46,6 +46,7 @@ define certs::vhost (
   String $key_target_path           = '',
   String $service                   = 'httpd',
   Boolean $vault                    = false,
+  Boolean $base64_vault_crt         = false,
   Boolean $notify_service           = true,
   Enum['crt','pem'] $cert_extension = 'crt',
   Hash $file_options                = {},
@@ -78,16 +79,24 @@ define certs::vhost (
   if $vault {
     $vault_ssl_hash = vault_lookup("${source_path}/${source_name}")
 
+    if $base64_vault_crt {
+      $crt_content = base64('decode', $vault_ssl_hash['crt'])
+    }
+    else {
+      $crt_content = $vault_ssl_hash['crt']
+    }
+    $key_content = $vault_ssl_hash['key']
+
     file { $cert_name:
       ensure  => file,
       path    => "${crt_target_path_final}/${cert_name}",
-      content => inline_epp('<%= $data %>', {'data' => $vault_ssl_hash['crt']}),
+      content => inline_epp('<%= $data %>', {'data' => $crt_content}),
       * => $file_options
     }
     -> file { $key_name:
       ensure  => file,
       path    => "${key_target_path_final}/${key_name}",
-      content => inline_epp('<%= $data %>', {'data' => $vault_ssl_hash['key']}),
+      content => inline_epp('<%= $data %>', {'data' => $key_content}),
       * => $file_options
     }
   }
