@@ -2,13 +2,29 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
-## [v1.2.0](https://github.com/rnelson0/puppet-certs/tree/v1.2.0) (2022-03-10)
+## [v2.0.0](https://github.com/rnelson0/puppet-certs/tree/v2.0.0) (2022-09-13)
 
-[Full Changelog](https://github.com/rnelson0/puppet-certs/compare/v1.1.0...v1.2.0)
+[Full Changelog](https://github.com/rnelson0/puppet-certs/compare/v1.2.0...v2.0.0)
 
 ### Added
 
+- Add features: base64 from Vault, different cert and key paths, file\_options [\#43](https://github.com/rnelson0/puppet-certs/pull/43) ([ekingme](https://github.com/ekingme))
+
+## [v1.2.0](https://github.com/rnelson0/puppet-certs/tree/v1.2.0) (2022-03-10)
+
+[Full Changelog](https://github.com/rnelson0/puppet-certs/compare/v1.1.1...v1.2.0)
+
+### Added
+
+- v1.2.0 release [\#42](https://github.com/rnelson0/puppet-certs/pull/42) ([rnelson0](https://github.com/rnelson0))
 - add param for extension [\#41](https://github.com/rnelson0/puppet-certs/pull/41) ([thunderpants73](https://github.com/thunderpants73))
+
+## [v1.1.1](https://github.com/rnelson0/puppet-certs/tree/v1.1.1) (2020-10-20)
+
+[Full Changelog](https://github.com/rnelson0/puppet-certs/compare/v1.1.0...v1.1.1)
+
+### Added
+
 - v1.1.1 release [\#39](https://github.com/rnelson0/puppet-certs/pull/39) ([rnelson0](https://github.com/rnelson0))
 
 ### Fixed
