@@ -39,13 +39,17 @@
 #  Use vault_lookup to query vault service for crt/key pair
 #  Default: 'undef'
 define certs::vhost (
-  $source_name                      = $name,
-  $source_path                      = undef,
-  $target_path                      = '/etc/ssl/certs',
-  $service                          = 'httpd',
-  $vault                            = undef,
-  $notify_service                   = true,
+  String $source_name               = $name,
+  String $source_path               = undef,
+  String $target_path               = '/etc/ssl/certs',
+  String $crt_target_path           = '',
+  String $key_target_path           = '',
+  String $service                   = 'httpd',
+  Boolean $vault                    = false,
+  Boolean $base64_vault_crt         = false,
+  Boolean $notify_service           = true,
   Enum['crt','pem'] $cert_extension = 'crt',
+  Hash $file_options                = {},
 ) {
   if ($name == undef) {
     fail('You must provide a name value for the vhost to certs::vhost.')
@@ -53,37 +57,61 @@ define certs::vhost (
   if ($source_path == undef) {
     fail('You must provide a source_path for the SSL files to certs::vhost.')
   }
-  if ($target_path == undef) {
-    fail('You must provide a target_ path for the certs to certs::vhost.')
-  }
 
   $cert_name = "${name}.${cert_extension}"
   $key_name = "${name}.key"
 
+
+  if $crt_target_path != '' {
+    $crt_target_path_final = $crt_target_path
+  }
+  else {
+    $crt_target_path_final = $target_path
+  }
+  if $key_target_path != '' {
+    $key_target_path_final = $key_target_path
+  }
+  else {
+    $key_target_path_final = $target_path
+  }
+
+
   if $vault {
     $vault_ssl_hash = vault_lookup("${source_path}/${source_name}")
 
+    if $base64_vault_crt {
+      $crt_content = base64('decode', $vault_ssl_hash['crt'])
+    }
+    else {
+      $crt_content = $vault_ssl_hash['crt']
+    }
+    $key_content = $vault_ssl_hash['key']
+
     file { $cert_name:
       ensure  => file,
-      path    => "${target_path}/${cert_name}",
-      content => inline_epp('<%= $data %>', {'data' => $vault_ssl_hash['crt']}),
+      path    => "${crt_target_path_final}/${cert_name}",
+      content => inline_epp('<%= $data %>', {'data' => $crt_content}),
+      * => $file_options
     }
     -> file { $key_name:
       ensure  => file,
-      path    => "${target_path}/${key_name}",
-      content => inline_epp('<%= $data %>', {'data' => $vault_ssl_hash['key']}),
+      path    => "${key_target_path_final}/${key_name}",
+      content => inline_epp('<%= $data %>', {'data' => $key_content}),
+      * => $file_options
     }
   }
   else {
     file { $cert_name:
       ensure => file,
-      path   => "${target_path}/${cert_name}",
+      path   => "${crt_target_path_final}/${cert_name}",
       source => "${source_path}/${source_name}.crt",
+      * => $file_options
     }
     -> file { $key_name:
       ensure => file,
-      path   => "${target_path}/${key_name}",
+      path   => "${key_target_path_final}/${key_name}",
       source => "${source_path}/${source_name}.key",
+      * => $file_options
     }
   }
   if $notify_service { Certs::Vhost[$title] ~> Service[$service] }

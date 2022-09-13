@@ -57,14 +57,32 @@ Creates the same crt and key files in `/etc/httpd/ssl.d`.
 
     Certs::Vhost<| |> -> Apache::Vhost<| |>
 
+If you wish for your certificate and key to go to different paths, you can specify them accordingly.  If one or bothof these values are not passed, `target_path` will be used.
+
+    certs::vhost { 'www.example.com':
+      crt_target_path => '/etc/pki/certs',
+      key_target_path => '/etc/pki/private',
+      source_path => 'puppet:///modules/site_certificates',
+    }
+
 When providing the certificate files to the `apache::vhost` or similar classes
 it is best to ensure they are properly dependent upon the `certs::vhost`.
 
-To use the vault options, you must have a module that is API compatible with [puppet-vault_lookup](https://forge.puppet.com/puppet/vault_lookup) installed. If you are not using vault, this dependency is optional.
+To use the vault options, you must have a module that is API compatible with [puppet-vault_lookup](https://forge.puppet.com/puppet/vault_lookup) installed. If you are not using vault, this dependency is optional.  Some types of certificates may have been encoded with base64 for compatibility with Vault, you can specify `base64_vault_crt` to decode this certificate type.
 
     certs::vhost { 'www.example.com':
-      target_path => '/etc/httpd/ssl.d',
-      source_path => '/v1/kv/puppet/ssl',
-      vault       => true,
+      target_path      => '/etc/httpd/ssl.d',
+      source_path      => '/v1/kv/puppet/ssl',
+      vault            => true,
+      base64_vault_crt => true,
     }
 
+You can optionally specify file options such as owner and mode by using the `file_options` variable.
+
+    certs::vhost { 'www.example.com':
+      target_path  => '/etc/httpd/ssl.d',
+      source_path  => 'puppet:///modules/site_certificates',
+      file_options => { owner => 'root',
+                        group => 'root',
+                        mode  => '0644',}
+    }
